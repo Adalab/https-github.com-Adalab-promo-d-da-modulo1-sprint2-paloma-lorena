@@ -1,6 +1,5 @@
--- CONSULTAS AVANZADAS --
+-- CONSULTAS AVANZADAS 2--
 USE northwind;
-
 
 /*1. Relación entre número de pedidos y máxima carga:
 Desde logística nos piden el número de pedidos y la máxima cantidad de carga de entre los mismos 
@@ -10,21 +9,22 @@ SELECT COUNT(order_id), MAX(freight), employee_id
 FROM orders
 GROUP BY employee_id;
 
-
+#PREGUNTAR
 /*2. Descartar pedidos sin fecha y ordénalos:
 Una vez han revisado los datos de la consulta anterior, nos han pedido afinar un poco más el "disparo". 
 En el resultado anterior se han incluido muchos pedidos cuya fecha de envío estaba vacía, por lo que tenemos 
 que mejorar la consulta en este aspecto. También nos piden que ordenemos los
 resultados según el ID de empleado para que la visualización sea más sencilla.*/
+-- mejorar  la fecha de envío vacía
 
 SELECT COUNT(order_id), MAX(freight), employee_id
 FROM orders
 WHERE shipped_date IS NOT NULL
 GROUP BY employee_id;
 
-SELECT COUNT(order_id), MAX(freight), employee_id
+SELECT COUNT(order_id), MAX(freight), employee_id, shipped_date
 FROM orders
-WHERE shipped_date IS NOT NULL
+WHERE shipped_date <> "0000-00-00 00:00:00"
 -- NOT NULL debería ser = '0000-00-00 00:00:00'
 GROUP BY employee_id;
 
@@ -39,6 +39,7 @@ mostrando de manera separada el día (DAY()), el mes (MONTH()) y el año (YEAR()
 SELECT COUNT(order_id), DAY(shipped_date), MONTH(shipped_date), YEAR(shipped_date)
 FROM orders
 GROUP BY shipped_date;
+#en la primera fila aparece un conteo de 21 pedidos sin fecha ¿?
 
 
 /*4. Número de pedidos por mes y año:
@@ -48,7 +49,7 @@ Genera una modificación de la consulta anterior para que agrupe los pedidos por
 SELECT COUNT(order_id), MONTH(shipped_date), YEAR(shipped_date)
 FROM orders
 GROUP BY MONTH(shipped_date), YEAR(shipped_date);
-
+#se podría añadir entonces una condición para eliminar esos nulos, verdad?
 
 /*5. Seleccionad las ciudades con 4 o más empleadas:
 Desde recursos humanos nos piden seleccionar los nombres de las ciudades con 4 o más empleadas de cara a estudiar 
@@ -72,3 +73,4 @@ CASE
 FROM order_details
 GROUP BY order_id;
 	
+#añadir descuento: cómo añadir sumas, restas, multiplicaciones, divisiones, etc en las f.agregadas
