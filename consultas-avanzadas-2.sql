@@ -36,9 +36,11 @@ El siguiente paso en el análisis de los pedidos va a consistir en conocer mejor
 según las fechas. Por lo tanto, tendremos que generar una consulta que nos saque el número de pedidos para cada día, 
 mostrando de manera separada el día (DAY()), el mes (MONTH()) y el año (YEAR()).*/
 
-SELECT COUNT(order_id), DAY(shipped_date), MONTH(shipped_date), YEAR(shipped_date)
+SELECT COUNT(order_id), DAY(order_date), MONTH(order_date), YEAR(order_date)
 FROM orders
-GROUP BY shipped_date;
+GROUP BY order_date;
+
+#order_date vs shipped_date
 #en la primera fila aparece un conteo de 21 pedidos sin fecha ¿?
 
 
