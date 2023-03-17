@@ -22,13 +22,14 @@ FROM orders
 WHERE shipped_date IS NOT NULL
 GROUP BY employee_id;
 
+-- En la consulta anterior no aparece ningún registro nulo, por ello probamos esta segunda
+-- query con el dato que aparece como "nulo" en la BBDD '0000-00-00 00:00:00', pero SQL no lo interpreta.
+
 SELECT COUNT(order_id), MAX(freight), employee_id, shipped_date
 FROM orders
 WHERE shipped_date <> "0000-00-00 00:00:00"
 -- NOT NULL debería ser = '0000-00-00 00:00:00'
 GROUP BY employee_id;
-
--- El resultado es igual al del apartado anterior porque no hay valores nules en shipped_date
 
 
 /*3. Números de pedidos por día:
@@ -40,18 +41,14 @@ SELECT COUNT(order_id), DAY(order_date), MONTH(order_date), YEAR(order_date)
 FROM orders
 GROUP BY order_date;
 
-#order_date vs shipped_date
-#en la primera fila aparece un conteo de 21 pedidos sin fecha ¿?
-
 
 /*4. Número de pedidos por mes y año:
 La consulta anterior nos muestra el número de pedidos para cada día concreto, pero esto es demasiado detalle. 
 Genera una modificación de la consulta anterior para que agrupe los pedidos por cada mes concreto de cada año.*/
 
-SELECT COUNT(order_id), MONTH(shipped_date), YEAR(shipped_date)
+SELECT COUNT(order_id), MONTH(order_date), YEAR(order_date)
 FROM orders
-GROUP BY MONTH(shipped_date), YEAR(shipped_date);
-#se podría añadir entonces una condición para eliminar esos nulos, verdad?
+GROUP BY MONTH(order_date), YEAR(order_date);
 
 /*5. Seleccionad las ciudades con 4 o más empleadas:
 Desde recursos humanos nos piden seleccionar los nombres de las ciudades con 4 o más empleadas de cara a estudiar 
@@ -62,17 +59,15 @@ FROM employees
 GROUP BY city
 HAVING COUNT(employee_id) >= 4;
 
-
 /*6. Cread una nueva columna basándonos en la cantidad monetaria:
 Necesitamos una consulta que clasifique los pedidos en dos categorías ("Alto" y "Bajo") en función de la 
 cantidad monetaria total que han supuesto: por encima o por debajo de 2000 euros.*/
 
 SELECT 
 CASE 
-	WHEN SUM(unit_price * quantity) > 2000 THEN "Alto" 
+	WHEN SUM((unit_price * quantity) - (1 - discount))  > 2000 THEN "Alto" 
     ELSE "Bajo" 
-    END AS cantidad_monetaria, COUNT(unit_price * quantity), order_id
+    END AS cantidad_monetaria, order_id
 FROM order_details
 GROUP BY order_id;
 	
-#añadir descuento: cómo añadir sumas, restas, multiplicaciones, divisiones, etc en las f.agregadas

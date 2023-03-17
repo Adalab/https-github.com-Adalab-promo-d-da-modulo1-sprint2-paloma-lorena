@@ -1,4 +1,4 @@
-# PAIR PROGRAMMING CONSULTAR EN MÚLTIPLES TABLAS 3
+-- CONSULTAS EN MÚLTIPLES TABLAS 3 --
 
 /* En esta lección de pair vamos a continuar trabajando sobre la base de datos Northwind. 
 Hoy ondremos en práctica sentencias como UNION, UNION ALL, INTERSECT o EXCEPT.
@@ -35,7 +35,7 @@ En este caso, nuestro jefe quiere saber cuantos pedidos ha gestionado "Nancy Dav
 una de nuestras empleadas. Nos pide todos los detalles tramitados por ella.*/
 
 -- Nancy Davolio
--- número pedidos ** (PREGUNTAR)
+-- número pedidos **
 -- todos los detalles tramitados por ella
 
 SELECT *
